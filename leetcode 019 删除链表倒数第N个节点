@@ -36,27 +36,24 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n)
     struct ListNode* prev = NULL;
     struct ListNode* current = head;
     struct ListNode* test = head;//这个test就是我拿过来测试链表长度的节点
-    int sz = 0;
-    if(head->next!=NULL)
+    int sz = 1
+    if(head->next!=NULL)//提示中声明sz>=1所以我们直接判断下一个节点有没有
     {
-        sz = 1;//当
         while(test->next!=NULL)
         {
             test = test->next;
             sz++;
         }
     }
-    else
-    return NULL;
     int i;
-    for(i=0;i<sz-n;i++)
+    for(i=0;i<sz-n;i++)//不删除头节点情况下递推
     {
         prev = current;
         current = current->next;
     }
-    if(prev==NULL)
+    if(prev==NULL)//删除头节点情况下
     {
-        return head->next;
+        return head->next;//直接返回下一个节点
     }
     prev->next = current->next;
     free(current);
