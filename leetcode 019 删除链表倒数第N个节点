@@ -1,0 +1,65 @@
+//给定一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+/*提示
+链表中结点的数目为 sz
+1 <= sz <= 30
+0 <= Node.val <= 100
+1 <= n <= sz
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+//我的理解
+//第一步：遍历链表找出节点数目
+//第二步：维护两个节点，根据给到的节点数目和要删除的第n个节点。开始循环递推：最后current节点会走到需要删除的节点，prev会到current的前一个
+//第三步：使prev->next = current->next;并free（current）；
+
+//遇到的问题：
+/*第一：我给prev初始化为NULL,结果是，当我想要删除的节点正好是头节点的时候。我们的循环没有进行，current 和 prev 都是保持的初始化的状态(current = head；prev = NULL)
+于是在最后当我想要进行   prev->next = current->next;实质上利用了NULL->next ,导致报错*/
+/*修改的方法:进行了一次if判断
+if(prev==NULL)
+    {
+        return head->next;
+    }
+如果想要删除的是头节点，那么我们干脆返回头节点的下一个节点作为头节点
+*/
+
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n)
+{
+    struct ListNode* prev = NULL;
+    struct ListNode* current = head;
+    struct ListNode* test = head;//这个test就是我拿过来测试链表长度的节点
+    int sz = 0;
+    if(head->next!=NULL)
+    {
+        sz = 1;//当
+        while(test->next!=NULL)
+        {
+            test = test->next;
+            sz++;
+        }
+    }
+    else
+    return NULL;
+    int i;
+    for(i=0;i<sz-n;i++)
+    {
+        prev = current;
+        current = current->next;
+    }
+    if(prev==NULL)
+    {
+        return head->next;
+    }
+    prev->next = current->next;
+    free(current);
+    return head;
+
+}
