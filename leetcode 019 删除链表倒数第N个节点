@@ -90,7 +90,21 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n)
     return ans;
 }
 //这个方法引用新节点，避免了头插的判断，哑节点变成了头节点。剩下的算作普通节点
+//由此可见，当问题涉及到对头结点的处理的时候，我们可以考虑设置一个哑节点作为头节点，将问题简单化普遍化
 
+//其实这里还有一种方法，只不过我们的函数需要的形参是**head_p，利用二级指针来操作，也会简单很多
+//这里我们试一试
+int main()
+{
+struct ListNode** head_p = head->next;
+return 0;
+}
+
+struct ListNode* removeNthFromEnd(struct ListNode** head_p,int n)//这里是让这个二级指针指向头节点的next指针
+{
+    struct ListNode* Nex = *head_p;//Nex 节点指向的是解引用后的head_p 即第二个节点（如果有的话）或者NULL
+    
+}
 作者：力扣官方题解
 链接：https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
 来源：力扣（LeetCode）
