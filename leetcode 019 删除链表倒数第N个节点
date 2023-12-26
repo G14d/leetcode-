@@ -60,3 +60,38 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n)
     return head;
 
 }
+
+//leetcode题解
+//设置哑节点
+int getLength(struct ListNode* head)
+{
+    int length = 0;
+    while (head) 
+    {
+        ++length;
+        head = head->next;
+    }
+    return length;
+}
+//得出链表长度
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n) 
+{
+    struct ListNode* dummy = malloc(sizeof(struct ListNode));//申请哑节点
+    dummy->val = 0, dummy->next = head;//初始化哑节点
+    int length = getLength(head);//获取链表长度
+    struct ListNode* cur = dummy;//设置当前节点指向哑节点
+    for (int i = 1; i < length - n + 1; ++i) //通过该函数走向删除节点的前一个节点
+    {
+        cur = cur->next;
+    }
+    cur->next = cur->next->next;直接使用cur->next代表下一个节点，在利用->next获取下下个节点的首地址
+    struct ListNode* ans = dummy->next;
+    free(dummy);//释放哑节点
+    return ans;
+}
+//这个方法引用新节点，避免了头插的判断，哑节点变成了头节点。剩下的算作普通节点
+
+作者：力扣官方题解
+链接：https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
