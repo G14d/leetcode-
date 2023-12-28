@@ -94,18 +94,59 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n)
 
 //其实这里还有一种方法，只不过我们的函数需要的形参是**head_p，利用二级指针来操作，也会简单很多
 //这里我们试一试
+int getLength(struct ListNode* head)
+{
+    int length = 0;
+    while (head) 
+    {
+        ++length;
+        head = head->next;
+    }
+    return length;
+}
 int main()
 {
-struct ListNode** head_p = head->next;
+struct ListNode** head_p =&head;
 return 0;
 }
 
-struct ListNode* removeNthFromEnd(struct ListNode** head_p,int n)//这里是让这个二级指针指向头节点的next指针
+struct ListNode* removeNthFromEnd(struct ListNode** head_p,int n,struct ListNode *head)//这里是让这个二级指针指向头节点的next指针
 {
-    struct ListNode* Nex = *head_p;//Nex 节点指向的是解引用后的head_p 即第二个节点（如果有的话）或者NULL
-    
+    int lenth = getLength(head);
+    struct ListNode * temp = *head_p // 用于临时储存需要删除的节点值，用于释放节点
+    int i;
+    for(i=0;i<lenth-n;i++)
+    {
+        head_p = &(*head_p->next);
+        temp = *head->p;
+    }
+    *head_p = *head_p->next;
+    free(temp);
+retrun head;
 }
+//双指针
+//双指针不需要知道链表的长度
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n)
+{
+    struct ListNode* dummy = malloc(sizeof(struct ListNode));
+    dummy->val = 0, dummy->next = head;
+    struct ListNode* first = head;
+    struct ListNode* second = dummy;
+//这里让first比second刚开始就多一个节点，应该是想让second最后走到删除节点前的一个节点
+    for (int i = 0; i < n; ++i) {
+        first = first->next;
+    }
+    while (first) {
+        first = first->next;
+        second = second->next;
+    }
+    second->next = second->next->next;//让需要删除的节点的前驱节点连接到后驱节点
+    struct ListNode* ans = dummy->next;//创建临时节点连接头节点
+    free(dummy);释放哑节点
+    return ans;
+}
+复杂度分析
+
 作者：力扣官方题解
-链接：https://leetcode.cn/problems/remove-nth-node-from-end-of-list/
+链接：https://leetcode.cn/problems/SLwz0R/
 来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
