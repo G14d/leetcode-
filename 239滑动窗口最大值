@@ -1,0 +1,30 @@
+int *maxSlidingWindow(int* nums,int numsSzie,int k,int* returnSize)
+{
+int q[numsSize];//建立队列,存储窗口元素中的索引
+int left = 0,right = 0;//左视作队头，右视作队尾
+for(int i =0;i<k;++i)//循环k次，k为窗口大小
+  {
+while(left<right&&nums[i]>=nums[q[right-1]])
+    {
+      right--;
+    }
+q[right++] = i;
+  }
+*returnSize = 0;//以上均为窗口初始化
+int *ans = malloc(sizeof(int)*(numsSize - k + 1));//申请一个空间装窗口的最大值
+ans[(*returnSize)++] = nums[q[left]];//存入第一个窗口的最大值
+for(int i = k;i<numsSize;++i)//从第一个窗口的下一个元素开始遍历
+  {
+    while(left<right && nums[i]>=nums[q[right-1]])//当队列不空，且当前元素大于队尾
+      {
+          right--;队尾提前
+       }
+    q[right++] = i;//替换队尾
+    while(q[left]<=i-k)
+     {
+        left++;
+      }
+    ans[(*returnSize)++] = nums[q[left]];
+  }
+    return ans;
+}
